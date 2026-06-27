@@ -4,6 +4,7 @@
 
 ## 截图
 
+<img width="426" height="225" alt="image" src="https://github.com/user-attachments/assets/3043a6f7-32d0-44bf-a418-ada5fba23aa6" />
 
 ## 特性
 
