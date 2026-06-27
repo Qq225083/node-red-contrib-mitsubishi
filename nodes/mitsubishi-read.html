@@ -1,0 +1,152 @@
+<script type="text/x-red" data-template-name="mitsubishi-read">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> 名称</label>
+    <input type="text" id="node-input-name" placeholder="三菱MC读取">
+  </div>
+  <div class="form-row">
+    <label for="node-input-plc"><i class="fa fa-microchip"></i> PLC 配置</label>
+    <input type="text" id="node-input-plc" placeholder="选择 mitsubishi-config 节点">
+  </div>
+  <div class="form-row">
+    <label for="node-input-serialNo"><i class="fa fa-hashtag"></i> 序列号 (4E帧, 0=不启用)</label>
+    <input type="number" id="node-input-serialNo" value="0" min="0" max="65535" style="width:100px">
+  </div>
+
+  <!-- 点位编辑表格 -->
+  <div class="form-row" style="margin-top:8px">
+    <label><i class="fa fa-list"></i> 默认点位 (msg.tags 传入时覆盖)</label>
+  </div>
+  <div style="margin-bottom:4px">
+    <table style="width:100%;font-size:12px;border-collapse:collapse">
+      <thead>
+        <tr style="color:#888">
+          <th style="width:11%;text-align:left">寄存器</th>
+          <th style="width:10%;text-align:left">地址</th>
+          <th style="width:16%;text-align:left">数据类型</th>
+          <th style="width:11%;text-align:left">斜率</th>
+          <th style="width:11%;text-align:left">偏移</th>
+          <th style="width:24%;text-align:left">名称</th>
+          <th style="width:6%"></th>
+          <th style="width:11%;text-align:left">ID</th>
+        </tr>
+      </thead>
+      <tbody id="tags-tbody"></tbody>
+    </table>
+    <button class="red-ui-button" onclick="addTagRow()" style="margin-top:4px;font-size:11px">
+      <i class="fa fa-plus"></i> 添加点位
+    </button>
+  </div>
+  <input type="hidden" id="node-input-tags">
+
+  <hr>
+  <div style="color:#888;font-size:11px;margin-bottom:4px">
+    <i class="fa fa-info-circle"></i> 静态: 表格配置 | 动态: msg.tags 传入覆盖<br>
+    输出: msg.payload.data[点位ID] = {rawValue, engValue, quality, ts}<br>
+    变换: engValue = rawValue × slope + offset
+  </div>
+</script>
+
+<script type="text/javascript">
+  var tagEditor = {
+    rows: [],
+    init: function () {
+      try { this.rows = JSON.parse($('#node-input-tags').val() || '[]'); } catch (e) { this.rows = []; }
+      this.render();
+    },
+    add: function () {
+      this.rows.push({ id: '', regType: 'D', addr: '', dataType: 'INT16', slope: '1', offset: '0', name: '' });
+      this.render();
+      this.save();
+    },
+    remove: function (idx) {
+      this.rows.splice(idx, 1);
+      this.render();
+      this.save();
+    },
+    update: function (idx, field, val) {
+      this.rows[idx][field] = val;
+      this.save();
+    },
+    save: function () {
+      $('#node-input-tags').val(JSON.stringify(this.rows));
+    },
+    render: function () {
+      var self = this;
+      var tbody = $('#tags-tbody');
+      tbody.empty();
+      this.rows.forEach(function (row, idx) {
+        var tr = $('<tr>');
+        var mkOpt = function (vals, cur) {
+          var s = '';
+          vals.forEach(function (v) { s += '<option' + (cur === v ? ' selected' : '') + '>' + v + '</option>'; });
+          return s;
+        };
+        var mkSel = function (vals, cur) { return $('<select style="width:95%">' + mkOpt(vals, cur) + '</select>'); };
+
+        // 寄存器
+        var reg = mkSel(['D','W','R','X','Y','M','L','B'], row.regType || 'D');
+        reg.on('change', function () { self.update(idx, 'regType', $(this).val()); });
+        tr.append($('<td>').append(reg));
+
+        // 地址
+        var addr = $('<input type="text" style="width:90%" placeholder="100">').val(row.addr || '');
+        addr.on('change', function () { self.update(idx, 'addr', $(this).val()); });
+        tr.append($('<td>').append(addr));
+
+        // 数据类型
+        var dt = mkSel(['INT16','UINT16','INT32','UINT32','FLOAT32','BOOL'], row.dataType || 'INT16');
+        dt.on('change', function () { self.update(idx, 'dataType', $(this).val()); });
+        tr.append($('<td>').append(dt));
+
+        // 斜率
+        var slope = $('<input type="number" style="width:90%" step="any" placeholder="1">').val(row.slope || '1');
+        slope.on('change', function () { self.update(idx, 'slope', $(this).val()); });
+        tr.append($('<td>').append(slope));
+
+        // 偏移
+        var off = $('<input type="number" style="width:90%" step="any" placeholder="0">').val(row.offset || '0');
+        off.on('change', function () { self.update(idx, 'offset', $(this).val()); });
+        tr.append($('<td>').append(off));
+
+        // 名称
+        var nm = $('<input type="text" style="width:95%" placeholder="温度">').val(row.name || '');
+        nm.on('change', function () { self.update(idx, 'name', $(this).val()); });
+        tr.append($('<td>').append(nm));
+
+        // 删除
+        var del = $('<button class="red-ui-button" style="font-size:10px;padding:1px 5px">✕</button>');
+        del.on('click', function (e) { e.preventDefault(); self.remove(idx); });
+        tr.append($('<td>').append(del));
+
+        // ID (自动生成或手动填)
+        var id = $('<input type="text" style="width:95%" placeholder="auto">').val(row.id || '');
+        id.on('change', function () { self.update(idx, 'id', $(this).val()); });
+        tr.append($('<td>').append(id));
+
+        tbody.append(tr);
+      });
+    }
+  };
+
+  RED.nodes.registerType('mitsubishi-read', {
+    category: '三菱 PLC',
+    color: '#C7E9C0',
+    defaults: {
+      name: { value: '三菱MC读取' },
+      plc: { type: 'mitsubishi-config', required: true },
+      serialNo: { value: 0 },
+      tags: { value: '[]' }
+    },
+    inputs: 1,
+    outputs: 1,
+    paletteLabel: 'MC 读取',
+    label: function () { return this.name || '三菱MC读取'; },
+    oneditprepare: function () {
+      tagEditor.init();
+      window.addTagRow = function () { tagEditor.add(); };
+    },
+    oneditsave: function () {
+      delete window.addTagRow;
+    }
+  });
+</script>

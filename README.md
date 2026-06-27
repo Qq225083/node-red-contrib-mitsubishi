@@ -4,7 +4,13 @@
 
 ## 截图
 
-<img width="426" height="225" alt="image" src="https://github.com/user-attachments/assets/3043a6f7-32d0-44bf-a418-ada5fba23aa6" />
+> 替换 `Qq225083` 为你的 GitHub 用户名
+
+![节点面板](https://raw.githubusercontent.com/Qq225083/node-red-contrib-mitsubishi/main/images/palette.png)
+
+![配置面板](https://raw.githubusercontent.com/Qq225083/node-red-contrib-mitsubishi/main/images/config.png)
+
+![采集输出](https://raw.githubusercontent.com/Qq225083/node-red-contrib-mitsubishi/main/images/output.png)
 
 ## 特性
 

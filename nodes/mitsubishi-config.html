@@ -1,0 +1,62 @@
+<script type="text/x-red" data-template-name="mitsubishi-config">
+  <div class="form-row">
+    <label for="node-config-input-name"><i class="fa fa-tag"></i> 名称</label>
+    <input type="text" id="node-config-input-name" placeholder="PLC-1">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-host"><i class="fa fa-globe"></i> IP 地址</label>
+    <input type="text" id="node-config-input-host" placeholder="192.168.1.10">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-port"><i class="fa fa-plug"></i> 端口</label>
+    <input type="number" id="node-config-input-port" placeholder="5007" min="1" max="65535">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-frame"><i class="fa fa-exchange"></i> 帧格式</label>
+    <select id="node-config-input-frame">
+      <option value="3E">3E (Q/L/FX3U)</option>
+      <option value="4E">4E (iQ-R/iQ-F/FX5U)</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-networkNo"><i class="fa fa-sitemap"></i> 网络号</label>
+    <input type="number" id="node-config-input-networkNo" value="0" min="0" max="255">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-stationNo"><i class="fa fa-server"></i> 站号</label>
+    <input type="number" id="node-config-input-stationNo" value="0" min="0" max="255">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-timeout"><i class="fa fa-clock-o"></i> 超时 (ms)</label>
+    <input type="number" id="node-config-input-timeout" value="3000" min="500" max="30000">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-maxRetries"><i class="fa fa-repeat"></i> 重试次数</label>
+    <input type="number" id="node-config-input-maxRetries" value="2" min="0" max="10">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-retryInterval"><i class="fa fa-hourglass-half"></i> 重试间隔 (ms)</label>
+    <input type="number" id="node-config-input-retryInterval" value="300" min="50" max="10000">
+  </div>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('mitsubishi-config', {
+    category: 'config',
+    defaults: {
+      name: { value: 'PLC-1' },
+      host: { value: '192.168.1.10', required: true },
+      port: { value: 5007, required: true, validate: RED.validators.number() },
+      frame: { value: '3E', required: true },
+      networkNo: { value: 0, validate: RED.validators.number() },
+      stationNo: { value: 0, validate: RED.validators.number() },
+      timeout: { value: 3000, validate: RED.validators.number() },
+      maxRetries: { value: 2, validate: RED.validators.number() },
+      retryInterval: { value: 300, validate: RED.validators.number() }
+    },
+    label: function () {
+      return this.name || 'PLC-1';
+    },
+    paletteLabel: 'PLC 连接配置'
+  });
+</script>
