@@ -4,13 +4,6 @@
 
 ## 截图
 
-> 替换 `your-username` 为你的 GitHub 用户名
-
-![节点面板](https://raw.githubusercontent.com/your-username/node-red-contrib-mitsubishi/main/images/palette.png)
-
-![配置面板](https://raw.githubusercontent.com/your-username/node-red-contrib-mitsubishi/main/images/config.png)
-
-![采集输出](https://raw.githubusercontent.com/your-username/node-red-contrib-mitsubishi/main/images/output.png)
 
 ## 特性
 
