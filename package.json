@@ -1,0 +1,28 @@
+{
+  "name": "node-red-contrib-mitsubishi",
+  "version": "1.0.1",
+  "description": "三菱 MC Protocol 3E/4E 采集节点 — 纯TCP零依赖, 支持Q/L/iQ-R/iQ-F/FX5U",
+  "main": "nodes/mitsubishi-read.js",
+  "node-red": {
+    "nodes": {
+      "mitsubishi-config": "nodes/mitsubishi-config.js",
+      "mitsubishi-read": "nodes/mitsubishi-read.js"
+    }
+  },
+  "keywords": [
+    "node-red",
+    "mitsubishi",
+    "mc-protocol",
+    "plc",
+    "3e",
+    "4e",
+    "melsec",
+    "industrial",
+    "iot",
+    "edgelink"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "license": "MIT"
+}
