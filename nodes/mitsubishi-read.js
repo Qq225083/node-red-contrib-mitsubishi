@@ -200,7 +200,8 @@ module.exports = function (RED) {
           var raw = BIT_DEVICES[t.regType] ? (Math.random() > 0.5 ? 1 : 0) : Math.floor(Math.random() * 1000);
           simOut[t.id] = { rawValue: raw, engValue: applyTransform(raw, t), quality: 0, ts: new Date().toISOString() };
         });
-        msg.payload = { success: true, data: simOut, error: null, roundTimeMs: Date.now() - roundStart };
+        var devId = plc.name || (plc.host + ':' + plc.port);
+        msg.payload = { success: true, deviceId: devId, data: simOut, error: null, roundTimeMs: Date.now() - roundStart };
         node.status({ fill: 'green', shape: 'dot', text: 'SIM ' + validTags.length + ' tags' });
         node.send(msg);
         return;
@@ -273,15 +274,17 @@ module.exports = function (RED) {
             var entry = allRaw[t.id];
             if (entry) {
               output[t.id] = {
-                rawValue: entry.rawValue,
-                engValue: applyTransform(entry.rawValue, t),
+                rawValue: entry.rawValue,                    // PLC 原始 int16
+                engValue: applyTransform(entry.convertedValue, t), // 解码值 × slope + offset
                 quality: entry.quality,
-                ts: entry.ts
+                ts: entry.ts,
+                regType: t.regType
               };
             }
           });
           msg.payload = {
             success: !hasFailed,
+            deviceId: plc.name || (plc.host + ':' + plc.port),
             data: output,
             error: hasFailed ? firstError : null,
             driverType: 'driver-mc-protocol',
@@ -336,8 +339,8 @@ module.exports = function (RED) {
             return;
           }
 
-          if (frameType === '4E' && currentSN > 0) currentSN = (currentSN + 1) & 0xFFFF;
           var sentSN = (frameType === '4E' && currentSN > 0) ? currentSN : 0;
+          if (frameType === '4E' && currentSN > 0) currentSN = (currentSN + 1) & 0xFFFF;
 
           var client = new net.Socket();
           var buf = Buffer.alloc(0);
@@ -380,29 +383,30 @@ module.exports = function (RED) {
                   } else if (raw && !raw.err) {
                     grp.tags.forEach(function (t) {
                       var key = grp.regType + t.addr;
-                      var rv = raw[key];
+                      var originRv = raw[key];           // PLC 原始 int16
+                      var cv = originRv;                 // 解码后的值
                       var q = 0;
-                      if (rv === undefined || rv === null) { q = 2; rv = null; }
+                      if (originRv === undefined || originRv === null) { q = 2; originRv = null; cv = null; }
                       else if (!isBit) {
                         var dt = t.dataType || 'INT16';
-                        if (dt === 'UINT16') { if (rv < 0) rv += 65536; }
+                        if (dt === 'UINT16') { if (cv < 0) cv += 65536; }
                         else if (dt === 'INT32' || dt === 'UINT32' || dt === 'FLOAT32') {
                           var adj = raw[grp.regType + (t.addr + 1)];
-                          if (adj === undefined || adj === null) { q = 2; rv = null; }
+                          if (adj === undefined || adj === null) { q = 2; originRv = null; cv = null; }
                           else {
-                            var hi = rv, lo = adj;
+                            var hi = originRv, lo = adj;
                             var combined = (hi << 16) | (lo & 0xFFFF);
-                            if (dt === 'INT32') rv = (combined > 0x7FFFFFFF) ? combined - 0x100000000 : combined;
-                            else if (dt === 'UINT32') rv = combined >>> 0;
+                            if (dt === 'INT32') cv = (combined > 0x7FFFFFFF) ? combined - 0x100000000 : combined;
+                            else if (dt === 'UINT32') cv = combined >>> 0;
                             else if (dt === 'FLOAT32') {
                               var b32 = Buffer.alloc(4);
                               b32.writeInt16LE(hi, 0); b32.writeInt16LE(lo, 2);
-                              rv = parseFloat(b32.readFloatLE(0).toFixed(4));
+                              cv = parseFloat(b32.readFloatLE(0).toFixed(4));
                             }
                           }
                         }
                       }
-                      allRaw[t.id] = { rawValue: rv, quality: q, ts: new Date().toISOString() };
+                      allRaw[t.id] = { rawValue: originRv, convertedValue: cv, quality: q, ts: new Date().toISOString() };
                     });
                     _destroyedByUs = true; try { client.destroy(); } catch (e) {}
                     setTimeout(function () { processGroup(gi + 1); }, 0);
