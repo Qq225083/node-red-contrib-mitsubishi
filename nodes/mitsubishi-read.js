@@ -466,6 +466,20 @@ module.exports = function (RED) {
         node.send(msg);
       }
     });
+
+    // ===== close: 释放锁防止死锁漂移 =====
+    node.on('close', function (done) {
+      try {
+        var p2 = node.plcConfig;
+        if (p2 && p2.host) {
+          var lk = 'edge_mc_lock_' + p2.host + '_' + p2.port;
+          delete global._mcLocks[lk];
+        }
+      } catch (e) {}
+      node.status({ fill: 'grey', shape: 'dot', text: 'closed' });
+      if (typeof done === 'function') done();
+    });
+
   }
 
   RED.nodes.registerType('mitsubishi-read', MitsubishiReadNode);
