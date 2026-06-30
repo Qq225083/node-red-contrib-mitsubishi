@@ -12,6 +12,26 @@
     <input type="number" id="node-input-serialNo" value="0" min="0" max="65535" style="width:100px">
   </div>
 
+  <!-- 批量生成 -->
+  <div class="form-row" style="margin-top:8px">
+    <label><i class="fa fa-bolt"></i> 批量添加</label>
+  </div>
+  <div style="margin-bottom:6px;display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+    <span style="font-size:11px">起始</span>
+    <input id="batch-start" type="number" value="0" min="0" style="width:60px;font-size:11px" placeholder="0">
+    <span style="font-size:11px">数量</span>
+    <input id="batch-count" type="number" value="1" min="1" max="500" style="width:55px;font-size:11px" placeholder="1">
+    <select id="batch-reg" style="width:55px;font-size:11px">
+      <option>D</option><option>W</option><option>R</option><option>X</option><option>Y</option><option>M</option><option>L</option><option>B</option>
+    </select>
+    <select id="batch-dt" style="width:75px;font-size:11px">
+      <option>INT16</option><option>UINT16</option><option>INT32</option><option>UINT32</option><option>FLOAT32</option><option>BOOL</option>
+    </select>
+    <button class="red-ui-button" onclick="addTagBatch()" style="font-size:11px;padding:2px 8px">
+      <i class="fa fa-bolt"></i> 生成
+    </button>
+  </div>
+
   <!-- 点位编辑表格 -->
   <div class="form-row" style="margin-top:8px">
     <label><i class="fa fa-list"></i> 默认点位 (msg.tags 传入时覆盖)</label>
@@ -144,6 +164,20 @@
     oneditprepare: function () {
       tagEditor.init();
       window.addTagRow = function () { tagEditor.add(); };
+      window.addTagBatch = function () {
+        var start = parseInt($('#batch-start').val(), 10) || 0;
+        var count = parseInt($('#batch-count').val(), 10) || 1;
+        var reg   = $('#batch-reg').val() || 'D';
+        var dt    = $('#batch-dt').val() || 'INT16';
+        for (var i = 0; i < count; i++) {
+          tagEditor.rows.push({
+            id: '', regType: reg, addr: String(start + i),
+            dataType: dt, slope: '1', offset: '0', name: reg + (start + i)
+          });
+        }
+        tagEditor.render();
+        tagEditor.save();
+      };
     },
     oneditsave: function () {
       delete window.addTagRow;
