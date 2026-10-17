@@ -1,65 +1,112 @@
 <script type="text/x-red" data-template-name="mitsubishi-config">
   <div class="form-row">
-    <label for="node-config-input-name"><i class="fa fa-tag"></i> 名称</label>
+    <label for="node-config-input-name">
+      <i class="fa fa-tag"></i>
+      <span data-i18n="mitsubishi-config.label.name"></span>
+    </label>
     <input type="text" id="node-config-input-name" placeholder="PLC-1">
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-host"><i class="fa fa-globe"></i> IP 地址</label>
+    <label for="node-config-input-host">
+      <i class="fa fa-globe"></i>
+      <span data-i18n="mitsubishi-config.label.host"></span>
+    </label>
     <input type="text" id="node-config-input-host" placeholder="192.168.1.10">
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-port"><i class="fa fa-plug"></i> 端口</label>
+    <label for="node-config-input-port">
+      <i class="fa fa-plug"></i>
+      <span data-i18n="mitsubishi-config.label.port"></span>
+    </label>
     <input type="number" id="node-config-input-port" placeholder="5007" min="1" max="65535">
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-frame"><i class="fa fa-exchange"></i> 帧格式</label>
+    <label for="node-config-input-frame">
+      <i class="fa fa-exchange"></i>
+      <span data-i18n="mitsubishi-config.label.frame"></span>
+    </label>
     <select id="node-config-input-frame">
       <option value="3E">3E (Q/L/FX3U)</option>
       <option value="4E">4E (iQ-R/iQ-F/FX5U)</option>
     </select>
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-series"><i class="fa fa-microchip"></i> PLC 系列</label>
+    <label for="node-config-input-series">
+      <i class="fa fa-microchip"></i>
+      <span data-i18n="mitsubishi-config.label.series"></span>
+    </label>
     <select id="node-config-input-series">
-      <option value="Q" selected>Q 系列</option>
-      <option value="L">L 系列</option>
-      <option value="iQ-R">iQ-R 系列</option>
-      <option value="FX">FX 系列（X/Y 为 8 进制地址）</option>
+      <option value="Q" selected data-i18n="mitsubishi-config.option.qSeries"></option>
+      <option value="L" data-i18n="mitsubishi-config.option.lSeries"></option>
+      <option value="iQ-R" data-i18n="mitsubishi-config.option.iqrSeries"></option>
+      <option value="FX" data-i18n="mitsubishi-config.option.fxSeries"></option>
     </select>
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-protocol"><i class="fa fa-arrows-h"></i> 传输协议</label>
+    <label for="node-config-input-protocol">
+      <i class="fa fa-arrows-h"></i>
+      <span data-i18n="mitsubishi-config.label.protocol"></span>
+    </label>
     <select id="node-config-input-protocol">
-      <option value="tcp" selected>TCP（长连接，默认）</option>
-      <option value="udp">UDP（无连接，QJ71E71/内置以太网常用）</option>
+      <option value="tcp" selected data-i18n="mitsubishi-config.option.tcp"></option>
+      <option value="udp" data-i18n="mitsubishi-config.option.udp"></option>
     </select>
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-commCode"><i class="fa fa-font"></i> 数据代码</label>
+    <label for="node-config-input-commCode">
+      <i class="fa fa-font"></i>
+      <span data-i18n="mitsubishi-config.label.commCode"></span>
+    </label>
     <select id="node-config-input-commCode">
-      <option value="binary" selected>Binary（默认，绝大多数设备）</option>
-      <option value="ascii_q">ASCII-Q（Q/L/E71 老式 MC 协议，软元件名式）</option>
-      <option value="ascii_slmp">ASCII-SLMP（FX5/iQ-R，hex 直译式）</option>
+      <option value="binary" selected data-i18n="mitsubishi-config.option.binary"></option>
+      <option value="ascii_q" data-i18n="mitsubishi-config.option.asciiQ"></option>
+      <option value="ascii_slmp" data-i18n="mitsubishi-config.option.asciiSlmp"></option>
     </select>
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-networkNo"><i class="fa fa-sitemap"></i> 网络号</label>
+    <label for="node-config-input-networkNo">
+      <i class="fa fa-sitemap"></i>
+      <span data-i18n="mitsubishi-config.label.networkNo"></span>
+    </label>
     <input type="number" id="node-config-input-networkNo" value="0" min="0" max="255">
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-stationNo"><i class="fa fa-server"></i> 站号</label>
+    <label for="node-config-input-stationNo">
+      <i class="fa fa-server"></i>
+      <span data-i18n="mitsubishi-config.label.stationNo"></span>
+    </label>
     <input type="number" id="node-config-input-stationNo" value="0" min="0" max="255">
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-timeout"><i class="fa fa-clock-o"></i> 超时 (ms)</label>
+    <label for="node-config-input-timeout">
+      <i class="fa fa-clock-o"></i>
+      <span data-i18n="mitsubishi-config.label.timeout"></span>
+    </label>
     <input type="number" id="node-config-input-timeout" value="3000" min="500" max="30000">
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-maxRetries"><i class="fa fa-repeat"></i> 重试次数</label>
+    <label for="node-config-input-maxRetries">
+      <i class="fa fa-repeat"></i>
+      <span data-i18n="mitsubishi-config.label.maxRetries"></span>
+    </label>
     <input type="number" id="node-config-input-maxRetries" value="2" min="0" max="10">
   </div>
+
   <div class="form-row">
-    <label for="node-config-input-retryInterval"><i class="fa fa-hourglass-half"></i> 重试间隔 (ms)</label>
+    <label for="node-config-input-retryInterval">
+      <i class="fa fa-hourglass-half"></i>
+      <span data-i18n="mitsubishi-config.label.retryInterval"></span>
+    </label>
     <input type="number" id="node-config-input-retryInterval" value="300" min="50" max="10000">
   </div>
 </script>
@@ -75,7 +122,7 @@
       series: { value: 'Q' },
       protocol: { value: 'tcp', required: true },
       ascii: { value: false },
-      commCode: { value: 'binary' }, 
+      commCode: { value: 'binary' },
       networkNo: { value: 0, validate: RED.validators.number() },
       stationNo: { value: 0, validate: RED.validators.number() },
       timeout: { value: 3000, validate: RED.validators.number() },
@@ -85,6 +132,8 @@
     label: function () {
       return this.name || 'PLC-1';
     },
-    paletteLabel: 'PLC 连接配置'
+    paletteLabel: function () {
+      return this._('mitsubishi-config.palette.label');
+    }
   });
 </script>

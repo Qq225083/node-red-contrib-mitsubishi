@@ -1,0 +1,64 @@
+{
+  "mitsubishi-read": {
+    "label": {
+      "name": "名称",
+      "plc": "PLC 配置",
+      "deviceId": "设备ID",
+      "serialNo": "序列号 (4E帧, 0=不启用)",
+      "batch": "批量添加",
+      "start": "起始",
+      "count": "数量",
+      "pageSize": "每页",
+      "table": "点位表格 (msg.tags 传入时覆盖)"
+    },
+    "hint": {
+      "deviceId": "独立使用时填入，输出 deviceId 固定为此值",
+      "csv": "首行为列名，从第二行起每行一个点位",
+      "static": "静态: 表格配置 | 动态: msg.tags 传入覆盖",
+      "output": "输出: msg.payload.data[点位ID] = {rawValue, engValue, quality, ts}",
+      "transform": "变换: engValue = rawValue × slope + offset",
+      "operation": "运算: add=this+ref, sub=this-ref, mul=this×ref, div=this÷ref"
+    },
+    "button": {
+      "generate": "生成",
+      "import": "CSV导入",
+      "export": "导出CSV",
+      "confirmImport": "确认导入",
+      "deleteSelected": "删除选中",
+      "addTag": "添加点位"
+    },
+    "table": {
+      "register": "寄存器",
+      "address": "地址",
+      "dataType": "数据类型",
+      "byteOrder": "字节序",
+      "wordOrder": "字序",
+      "bit": "位",
+      "name": "名称",
+      "selectAll": "全选",
+      "byteOrderTitle": "字节序：16 位字内高低字节是否交换",
+      "wordOrderTitle": "字序：32/64 位类型高低字先后",
+      "bitTitle": "位偏移：BOOL 取字内第几位(0-15)",
+      "slope": "斜率",
+      "offset": "偏移",
+      "operator": "运算",
+      "reference": "引用ID"
+    },
+    "notify": {
+      "noneSelected": "未选中任何点位",
+      "noCsv": "请粘贴CSV数据",
+      "invalidCsv": "CSV至少需要表头+1行数据",
+      "imported": "导入 __count__ 个点位"
+    },
+    "placeholder": {
+      "plc": "选择 mitsubishi-config 节点",
+      "reference": "目标点位ID",
+      "nodeName": "三菱MC读取",
+      "tagName": "温度",
+      "csvExample": "regType,addr,dataType,slope,offset,operator,referenceTag,name,id\nD,100,INT16,1,0,,,温度,temp_001\nD,101,INT16,1,0,,,压力,temp_002"
+    },
+    "palette": {
+      "label": "MC 读取"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "mitsubishi-write": {
+    "label": {
+      "name": "名称",
+      "plc": "PLC 配置",
+      "deviceId": "设备ID",
+      "serialNo": "序列号 (4E帧, 0=不启用)",
+      "batch": "批量添加",
+      "start": "起始",
+      "count": "数量",
+      "pageSize": "每页",
+      "table": "点位表格 (msg.payload.tags 传入时按 id/地址合并；value 缺省回落默认值)"
+    },
+    "hint": {
+      "deviceId": "独立使用时填入，输出 deviceId 固定为此值",
+      "csv": "首行为列名，从第二行起每行一个点位。写入值：msg.payload.tags[].value 优先，缺省回落默认值列",
+      "static": "静态: 表格配置点位定义+默认值，任意消息触发即写入 | 动态: msg.payload.tags 按 id/地址合并覆盖",
+      "writeValue": "写入值：msg.payload.tags[].value 优先，缺省回落表格默认值列；两者都无则跳过该点位",
+      "output": "输出: msg.payload.data[点位ID] = {value, quality, ts, regType}",
+      "bool": "BOOL / 位设备地址自动走 RMW（读-改-写），非 BOOL 字元件直接批量写"
+    },
+    "button": {
+      "generate": "生成",
+      "import": "CSV导入",
+      "export": "导出CSV",
+      "confirmImport": "确认导入",
+      "deleteSelected": "删除选中",
+      "addTag": "添加点位"
+    },
+    "table": {
+      "register": "寄存器",
+      "address": "地址",
+      "dataType": "数据类型",
+      "byteOrder": "字节序",
+      "wordOrder": "字序",
+      "bit": "位",
+      "name": "名称",
+      "selectAll": "全选",
+      "byteOrderTitle": "字节序：16 位字内高低字节是否交换",
+      "wordOrderTitle": "字序：32/64 位类型高低字先后",
+      "bitTitle": "位偏移：BOOL 取字内第几位(0-15)",
+      "defaultValue": "默认值",
+      "defaultValueTitle": "静态默认值：msg 未提供 value 时使用；留空则必须由 msg 提供"
+    },
+    "notify": {
+      "noneSelected": "未选中任何点位",
+      "noCsv": "请粘贴CSV数据",
+      "invalidCsv": "CSV至少需要表头+1行数据",
+      "imported": "导入 __count__ 个点位"
+    },
+    "placeholder": {
+      "plc": "选择 mitsubishi-config 节点",
+      "reference": "目标点位ID",
+      "nodeName": "三菱MC写入",
+      "tagName": "温度设定点",
+      "staticValue": "静态值",
+      "csvExample": "regType,addr,dataType,byteOrder,wordOrder,bitOffset,name,id,value\nD,100,INT16,,,src,温度设定点,temp_set,25.0\nM,0,BOOL,,,,,启动信号,m_start,"
+    },
+    "palette": {
+      "label": "MC 写入"
+    }
+  }
+}

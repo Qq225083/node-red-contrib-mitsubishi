@@ -1,30 +1,30 @@
 <script type="text/x-red" data-template-name="mitsubishi-read">
   <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> 名称</label>
-    <input type="text" id="node-input-name" placeholder="三菱MC读取">
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="mitsubishi-read.label.name"></span></label>
+    <input type="text" id="node-input-name" placeholder="" data-i18n="[placeholder]mitsubishi-read.placeholder.nodeName">
   </div>
   <div class="form-row">
-    <label for="node-input-plc"><i class="fa fa-microchip"></i> PLC 配置</label>
-    <input type="text" id="node-input-plc" placeholder="选择 mitsubishi-config 节点">
+    <label for="node-input-plc"><i class="fa fa-microchip"></i> <span data-i18n="mitsubishi-read.label.plc"></span></label>
+    <input type="text" id="node-input-plc" placeholder="" data-i18n="[placeholder]mitsubishi-read.placeholder.plc">
   </div>
   <div class="form-row">
-    <label for="node-input-deviceId"><i class="fa fa-id-card"></i> 设备ID</label>
+    <label for="node-input-deviceId"><i class="fa fa-id-card"></i> <span data-i18n="mitsubishi-read.label.deviceId"></span></label>
     <input type="text" id="node-input-deviceId" placeholder="1001">
-    <span style="font-size:0.85em;color:#888;margin-left:4px">独立使用时填入，输出 deviceId 固定为此值</span>
+    <span style="font-size:0.85em;color:#888;margin-left:4px"><span data-i18n="mitsubishi-read.hint.deviceId"></span></span>
   </div>
   <div class="form-row">
-    <label for="node-input-serialNo"><i class="fa fa-hashtag"></i> 序列号 (4E帧, 0=不启用)</label>
+    <label for="node-input-serialNo"><i class="fa fa-hashtag"></i> <span data-i18n="mitsubishi-read.label.serialNo"></span></label>
     <input type="number" id="node-input-serialNo" value="0" min="0" max="65535" style="width:100px">
   </div>
 
   <!-- 批量生成 + CSV -->
   <div class="form-row" style="margin-top:8px">
-    <label><i class="fa fa-bolt"></i> 批量添加</label>
+    <label><i class="fa fa-bolt"></i> <span data-i18n="mitsubishi-read.label.batch"></span></label>
   </div>
   <div style="margin-bottom:6px;display:flex;gap:4px;align-items:center;flex-wrap:wrap">
-    <span style="font-size:11px">起始</span>
+    <span style="font-size:11px"><span data-i18n="mitsubishi-read.label.start"></span></span>
     <input id="batch-start" type="number" value="0" min="0" style="width:60px;font-size:11px" placeholder="0">
-    <span style="font-size:11px">数量</span>
+    <span style="font-size:11px"><span data-i18n="mitsubishi-read.label.count"></span></span>
     <input id="batch-count" type="number" value="1" min="1" max="500" style="width:55px;font-size:11px" placeholder="1">
     <select id="batch-reg" style="width:55px;font-size:11px">
       <option>D</option><option>W</option><option>R</option><option>X</option><option>Y</option><option>M</option><option>L</option><option>B</option>
@@ -33,31 +33,29 @@
       <option>INT16</option><option>UINT16</option><option>INT32</option><option>UINT32</option><option>FLOAT32</option><option>BOOL</option>
     </select>
     <button class="red-ui-button" onclick="addTagBatch()" style="font-size:11px;padding:2px 8px">
-      <i class="fa fa-bolt"></i> 生成
+      <i class="fa fa-bolt"></i> <span data-i18n="mitsubishi-read.button.generate"></span>
     </button>
     <span style="flex:1"></span>
     <button class="red-ui-button" onclick="$('#csv-import-area').toggle()" style="font-size:11px;padding:2px 8px;background:#888">
-      <i class="fa fa-upload"></i> CSV导入
+      <i class="fa fa-upload"></i> <span data-i18n="mitsubishi-read.button.import"></span>
     </button>
     <button class="red-ui-button" onclick="tagEditor.exportCSV()" style="font-size:11px;padding:2px 8px;background:#888">
-      <i class="fa fa-download"></i> 导出CSV
+      <i class="fa fa-download"></i> <span data-i18n="mitsubishi-read.button.export"></span>
     </button>
   </div>
 
   <!-- CSV 导入区 (默认隐藏) -->
   <div id="csv-import-area" style="display:none;margin-bottom:6px">
-    <textarea id="csv-import-text" style="width:100%;height:80px;font-size:11px;box-sizing:border-box" placeholder="regType,addr,dataType,slope,offset,operator,referenceTag,name,id
-D,100,INT16,1,0,,,温度,temp_001
-D,101,INT16,1,0,,,压力,temp_002"></textarea>
+    <textarea id="csv-import-text" style="width:100%;height:80px;font-size:11px;box-sizing:border-box" placeholder="" data-i18n="[placeholder]mitsubishi-read.placeholder.csvExample"></textarea>
     <button class="red-ui-button" onclick="tagEditor.doImportCSV()" style="font-size:11px;padding:2px 8px;margin-top:2px">
-      <i class="fa fa-check"></i> 确认导入
+      <i class="fa fa-check"></i> <span data-i18n="mitsubishi-read.button.confirmImport"></span>
     </button>
-    <span style="font-size:10px;color:#888;margin-left:4px">首行为列名，从第二行起每行一个点位</span>
+    <span style="font-size:10px;color:#888;margin-left:4px"><span data-i18n="mitsubishi-read.hint.csv"></span></span>
   </div>
 
   <!-- 分页 + 批量删除 -->
   <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px" id="tag-pager">
-    <span style="font-size:11px;color:#888">每页</span>
+    <span style="font-size:11px;color:#888"><span data-i18n="mitsubishi-read.label.pageSize"></span></span>
     <select id="pager-size" onchange="tagEditor.setPageSize(this.value)" style="width:55px;font-size:11px">
       <option value="50">50</option><option value="100" selected>100</option><option value="200">200</option><option value="500">500</option>
     </select>
@@ -68,30 +66,30 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
     <button class="red-ui-button" onclick="tagEditor.goPage(-1)" style="font-size:10px;padding:1px 5px">»</button>
     <span style="flex:1"></span>
     <button class="red-ui-button" onclick="tagEditor.deleteSelected()" style="font-size:10px;padding:1px 6px;background:#c44">
-      <i class="fa fa-trash"></i> 删除选中
+      <i class="fa fa-trash"></i> <span data-i18n="mitsubishi-read.button.deleteSelected"></span>
     </button>
   </div>
 
   <!-- 点位编辑表格 -->
   <div class="form-row" style="margin-top:0">
-    <label><i class="fa fa-list"></i> 点位表格 (msg.tags 传入时覆盖)</label>
+    <label><i class="fa fa-list"></i> <span data-i18n="mitsubishi-read.label.table"></span></label>
   </div>
   <div style="margin-bottom:4px;max-height:420px;overflow-y:auto">
     <table style="width:100%;font-size:11px;border-collapse:collapse">
       <thead>
         <tr style="color:#888;position:sticky;top:0;background:#333">
-          <th style="width:3%"><input type="checkbox" id="tag-select-all" onchange="tagEditor.toggleAll(this.checked)" title="全选"></th>
-          <th style="width:7%;text-align:left">寄存器</th>
-          <th style="width:6%;text-align:left">地址</th>
-          <th style="width:9%;text-align:left">数据类型</th>
-          <th style="width:8%;text-align:left" title="字节序：16 位字内高低字节是否交换">字节序</th>
-          <th style="width:7%;text-align:left" title="字序：32/64 位类型高低字先后">字序</th>
-          <th style="width:5%;text-align:left" title="位偏移：BOOL 取字内第几位(0-15)">位</th>
-          <th style="width:6%;text-align:left">斜率</th>
-          <th style="width:6%;text-align:left">偏移</th>
-          <th style="width:6%;text-align:left">运算</th>
-          <th style="width:11%;text-align:left">引用ID</th>
-          <th style="width:11%;text-align:left">名称</th>
+          <th style="width:3%"><input type="checkbox" id="tag-select-all" onchange="tagEditor.toggleAll(this.checked)" title="" data-i18n="[title]mitsubishi-read.table.selectAll"></th>
+          <th style="width:7%;text-align:left"><span data-i18n="mitsubishi-read.table.register"></span></th>
+          <th style="width:6%;text-align:left"><span data-i18n="mitsubishi-read.table.address"></span></th>
+          <th style="width:9%;text-align:left"><span data-i18n="mitsubishi-read.table.dataType"></span></th>
+          <th style="width:8%;text-align:left" title="" data-i18n="[title]mitsubishi-read.table.byteOrderTitle"><span data-i18n="mitsubishi-read.table.byteOrder"></span></th>
+          <th style="width:7%;text-align:left" title="" data-i18n="[title]mitsubishi-read.table.wordOrderTitle"><span data-i18n="mitsubishi-read.table.wordOrder"></span></th>
+          <th style="width:5%;text-align:left" title="" data-i18n="[title]mitsubishi-read.table.bitTitle"><span data-i18n="mitsubishi-read.table.bit"></span></th>
+          <th style="width:6%;text-align:left"><span data-i18n="mitsubishi-read.table.slope"></span></th>
+          <th style="width:6%;text-align:left"><span data-i18n="mitsubishi-read.table.offset"></span></th>
+          <th style="width:6%;text-align:left"><span data-i18n="mitsubishi-read.table.operator"></span></th>
+          <th style="width:11%;text-align:left"><span data-i18n="mitsubishi-read.table.reference"></span></th>
+          <th style="width:11%;text-align:left"><span data-i18n="mitsubishi-read.label.name"></span></th>
           <th style="width:4%"></th>
           <th style="width:9%;text-align:left">ID</th>
         </tr>
@@ -100,16 +98,16 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
     </table>
   </div>
   <button class="red-ui-button" onclick="tagEditor.add(); tagEditor.goToLast();" style="margin-top:2px;font-size:11px">
-    <i class="fa fa-plus"></i> 添加点位
+    <i class="fa fa-plus"></i> <span data-i18n="mitsubishi-read.button.addTag"></span>
   </button>
   <input type="hidden" id="node-input-tags">
 
   <hr>
   <div style="color:#888;font-size:11px;margin-bottom:4px">
-    <i class="fa fa-info-circle"></i> 静态: 表格配置 | 动态: msg.tags 传入覆盖<br>
-    输出: msg.payload.data[点位ID] = {rawValue, engValue, quality, ts}<br>
-    变换: engValue = rawValue × slope + offset<br>
-    运算: add=this+ref, sub=this-ref, mul=this×ref, div=this÷ref
+    <i class="fa fa-info-circle"></i> <span data-i18n="mitsubishi-read.hint.static"></span><br>
+    <span data-i18n="mitsubishi-read.hint.output"></span><br>
+    <span data-i18n="mitsubishi-read.hint.transform"></span><br>
+    <span data-i18n="mitsubishi-read.hint.operation"></span>
   </div>
 </script>
 
@@ -119,6 +117,10 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
     page: 0,
     pageSize: 100,
     _selected: {},
+    _translate: null,
+    t: function (key, options) {
+      return this._translate ? this._translate('mitsubishi-read.' + key, options) : key;
+    },
 
     init: function () {
       try { this.rows = JSON.parse($('#node-input-tags').val() || '[]'); } catch (e) { this.rows = []; }
@@ -144,7 +146,7 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
     /** 🆕 批量删除选中 */
     deleteSelected: function () {
       var toRemove = Object.keys(this._selected).filter(function (k) { return this._selected[k]; }.bind(this)).map(Number).sort(function (a, b) { return b - a; });
-      if (toRemove.length === 0) { RED.notify('未选中任何点位', 'warning'); return; }
+      if (toRemove.length === 0) { RED.notify(tagEditor.t('notify.noneSelected'), 'warning'); return; }
       for (var i = 0; i < toRemove.length; i++) { this.rows.splice(toRemove[i], 1); }
       this._selected = {};
       this.render();
@@ -182,9 +184,9 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
     /** 🆕 读取 textarea 导入 CSV */
     doImportCSV: function () {
       var text = $('#csv-import-text').val().trim();
-      if (!text) { RED.notify('请粘贴CSV数据', 'warning'); return; }
+      if (!text) { RED.notify(tagEditor.t('notify.noCsv'), 'warning'); return; }
       var lines = text.split('\n');
-      if (lines.length < 2) { RED.notify('CSV至少需要表头+1行数据', 'warning'); return; }
+      if (lines.length < 2) { RED.notify(tagEditor.t('notify.invalidCsv'), 'warning'); return; }
       var headers = lines[0].split(',');
       var added = 0;
       for (var i = 1; i < lines.length; i++) {
@@ -210,7 +212,7 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
       this.goToLast();
       $('#csv-import-area').hide();
       $('#csv-import-text').val('');
-      RED.notify('导入 ' + added + ' 个点位');
+      RED.notify(tagEditor.t('notify.imported', {count: added}));
     },
 
     exportCSV: function () {
@@ -219,7 +221,7 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
         var r = this.rows[i];
         csv += [r.regType||'', r.addr||'', r.dataType||'', r.byteOrder||'', r.wordOrder||'', r.bitOffset||'', r.slope||'1', r.offset||'0', r.operator||'', r.referenceTag||'', r.name||'', r.id||''].join(',') + '\n';
       }
-      var blob = new Blob(['﻿' + csv], {type: 'text/csv;charset=utf-8'});
+      var blob = new Blob(['' + csv], {type: 'text/csv;charset=utf-8'});
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a'); a.href = url; a.download = 'mc-tags.csv';
       a.click(); URL.revokeObjectURL(url);
@@ -297,12 +299,12 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
         tr.append($('<td>').append(op));
 
         // 引用ID (直接输入目标点位ID)
-        var ref = mkInp(row.referenceTag, '目标点位ID', 'text', '90%');
+        var ref = mkInp(row.referenceTag, tagEditor.t('placeholder.reference'), 'text', '90%');
         ref.on('change', function () { self.update(idx, 'referenceTag', $(this).val()); });
         tr.append($('<td>').append(ref));
 
         // 名称
-        var nm = mkInp(row.name, '温度', 'text', '90%');
+        var nm = mkInp(row.name, tagEditor.t('placeholder.tagName'), 'text', '90%');
         nm.on('change', function () { self.update(idx, 'name', $(this).val()); });
         tr.append($('<td>').append(nm));
 
@@ -325,7 +327,7 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
     category: 'edgelink',
     color: '#C7E9C0',
     defaults: {
-      name: { value: '三菱MC读取' },
+      name: { value: '' },
       plc: { type: 'mitsubishi-config', required: true },
       deviceId: { value: '' },
       serialNo: { value: 0 },
@@ -333,9 +335,10 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
     },
     inputs: 1,
     outputs: 1,
-    paletteLabel: 'MC 读取',
-    label: function () { return this.name || '三菱MC读取'; },
+    paletteLabel: function () { return this._('mitsubishi-read.palette.label'); },
+    label: function () { return this.name || this._('mitsubishi-read.placeholder.nodeName'); },
     oneditprepare: function () {
+      tagEditor._translate = this._.bind(this);
       tagEditor.init();
       window.addTagRow = function () { tagEditor.add(); tagEditor.goToLast(); };
       window.addTagBatch = function () {
@@ -356,6 +359,7 @@ D,101,INT16,1,0,,,压力,temp_002"></textarea>
       };
     },
     oneditsave: function () {
+      tagEditor._translate = null;
       delete window.addTagRow; delete window.addTagBatch;
     }
   });

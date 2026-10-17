@@ -1,0 +1,64 @@
+{
+  "mitsubishi-read": {
+    "label": {
+      "name": "Name",
+      "plc": "PLC Configuration",
+      "deviceId": "Device ID",
+      "serialNo": "Serial Number (4E frame, 0 = disabled)",
+      "batch": "Batch Add",
+      "start": "Start",
+      "count": "Count",
+      "pageSize": "Per page",
+      "table": "Tag Table (overridden by msg.tags)"
+    },
+    "hint": {
+      "deviceId": "Enter when used independently; the output deviceId will use this value",
+      "csv": "First row contains column names; each following row defines one tag",
+      "static": "Static: table configuration | Dynamic: overridden by msg.tags",
+      "output": "Output: msg.payload.data[tagId] = {rawValue, engValue, quality, ts}",
+      "transform": "Transform: engValue = rawValue × slope + offset",
+      "operation": "Operations: add=this+ref, sub=this-ref, mul=this×ref, div=this÷ref"
+    },
+    "button": {
+      "generate": "Generate",
+      "import": "Import CSV",
+      "export": "Export CSV",
+      "confirmImport": "Confirm Import",
+      "deleteSelected": "Delete Selected",
+      "addTag": "Add Tag"
+    },
+    "table": {
+      "register": "Register",
+      "address": "Address",
+      "dataType": "Data Type",
+      "byteOrder": "Byte Order",
+      "wordOrder": "Word Order",
+      "bit": "Bit",
+      "name": "Name",
+      "selectAll": "Select All",
+      "byteOrderTitle": "Byte order: swap high/low bytes within a 16-bit word",
+      "wordOrderTitle": "Word order: high/low word order for 32/64-bit values",
+      "bitTitle": "Bit offset: bit position within a word for BOOL (0–15)",
+      "slope": "Slope",
+      "offset": "Offset",
+      "operator": "Operation",
+      "reference": "Reference ID"
+    },
+    "notify": {
+      "noneSelected": "No tags selected",
+      "noCsv": "Please paste CSV data",
+      "invalidCsv": "CSV requires a header and at least one data row",
+      "imported": "Imported __count__ tags"
+    },
+    "placeholder": {
+      "plc": "Select a mitsubishi-config node",
+      "reference": "Target tag ID",
+      "nodeName": "Mitsubishi MC Read",
+      "tagName": "Temperature",
+      "csvExample": "regType,addr,dataType,slope,offset,operator,referenceTag,name,id\nD,100,INT16,1,0,,,Temperature,temp_001\nD,101,INT16,1,0,,,Pressure,temp_002"
+    },
+    "palette": {
+      "label": "MC Read"
+    }
+  }
+}

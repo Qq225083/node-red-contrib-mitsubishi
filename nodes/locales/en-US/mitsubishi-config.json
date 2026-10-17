@@ -1,0 +1,32 @@
+{
+  "mitsubishi-config": {
+    "label": {
+      "name": "Name",
+      "host": "IP Address",
+      "port": "Port",
+      "frame": "Frame Format",
+      "series": "PLC Series",
+      "protocol": "Transport Protocol",
+      "commCode": "Data Encoding",
+      "networkNo": "Network Number",
+      "stationNo": "Station Number",
+      "timeout": "Timeout (ms)",
+      "maxRetries": "Retry Count",
+      "retryInterval": "Retry Interval (ms)"
+    },
+    "option": {
+      "qSeries": "Q Series",
+      "lSeries": "L Series",
+      "iqrSeries": "iQ-R Series",
+      "fxSeries": "FX Series (X/Y use octal addresses)",
+      "tcp": "TCP (persistent connection, default)",
+      "udp": "UDP (connectionless, commonly used with QJ71E71/built-in Ethernet)",
+      "binary": "Binary (default, most devices)",
+      "asciiQ": "ASCII-Q (legacy Q/L/E71 MC protocol, device-name format)",
+      "asciiSlmp": "ASCII-SLMP (FX5/iQ-R, hexadecimal format)"
+    },
+    "palette": {
+      "label": "PLC Connection Config"
+    }
+  }
+}

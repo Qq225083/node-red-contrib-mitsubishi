@@ -1,30 +1,30 @@
 <script type="text/x-red" data-template-name="mitsubishi-write">
   <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> 名称</label>
-    <input type="text" id="node-input-name" placeholder="三菱MC写入">
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="mitsubishi-write.label.name"></span></label>
+    <input type="text" id="node-input-name" placeholder="" data-i18n="[placeholder]mitsubishi-write.placeholder.nodeName">
   </div>
   <div class="form-row">
-    <label for="node-input-plc"><i class="fa fa-microchip"></i> PLC 配置</label>
-    <input type="text" id="node-input-plc" placeholder="选择 mitsubishi-config 节点">
+    <label for="node-input-plc"><i class="fa fa-microchip"></i> <span data-i18n="mitsubishi-write.label.plc"></span></label>
+    <input type="text" id="node-input-plc" placeholder="" data-i18n="[placeholder]mitsubishi-write.placeholder.plc">
   </div>
   <div class="form-row">
-    <label for="node-input-deviceId"><i class="fa fa-id-card"></i> 设备ID</label>
+    <label for="node-input-deviceId"><i class="fa fa-id-card"></i> <span data-i18n="mitsubishi-write.label.deviceId"></span></label>
     <input type="text" id="node-input-deviceId" placeholder="1001">
-    <span style="font-size:0.85em;color:#888;margin-left:4px">独立使用时填入，输出 deviceId 固定为此值</span>
+    <span style="font-size:0.85em;color:#888;margin-left:4px"><span data-i18n="mitsubishi-write.hint.deviceId"></span></span>
   </div>
   <div class="form-row">
-    <label for="node-input-serialNo"><i class="fa fa-hashtag"></i> 序列号 (4E帧, 0=不启用)</label>
+    <label for="node-input-serialNo"><i class="fa fa-hashtag"></i> <span data-i18n="mitsubishi-write.label.serialNo"></span></label>
     <input type="number" id="node-input-serialNo" value="0" min="0" max="65535" style="width:100px">
   </div>
 
   <!-- 批量生成 + CSV -->
   <div class="form-row" style="margin-top:8px">
-    <label><i class="fa fa-bolt"></i> 批量添加</label>
+    <label><i class="fa fa-bolt"></i> <span data-i18n="mitsubishi-write.label.batch"></span></label>
   </div>
   <div style="margin-bottom:6px;display:flex;gap:4px;align-items:center;flex-wrap:wrap">
-    <span style="font-size:11px">起始</span>
+    <span style="font-size:11px"><span data-i18n="mitsubishi-write.label.start"></span></span>
     <input id="w-batch-start" type="number" value="0" min="0" style="width:60px;font-size:11px" placeholder="0">
-    <span style="font-size:11px">数量</span>
+    <span style="font-size:11px"><span data-i18n="mitsubishi-write.label.count"></span></span>
     <input id="w-batch-count" type="number" value="1" min="1" max="500" style="width:55px;font-size:11px" placeholder="1">
     <select id="w-batch-reg" style="width:55px;font-size:11px">
       <option>D</option><option>W</option><option>R</option><option>X</option><option>Y</option><option>M</option><option>L</option><option>B</option>
@@ -33,31 +33,29 @@
       <option>INT16</option><option>UINT16</option><option>INT32</option><option>UINT32</option><option>FLOAT32</option><option>BOOL</option>
     </select>
     <button class="red-ui-button" onclick="addWriteTagBatch()" style="font-size:11px;padding:2px 8px">
-      <i class="fa fa-bolt"></i> 生成
+      <i class="fa fa-bolt"></i> <span data-i18n="mitsubishi-write.button.generate"></span>
     </button>
     <span style="flex:1"></span>
     <button class="red-ui-button" onclick="$('#w-csv-import-area').toggle()" style="font-size:11px;padding:2px 8px;background:#888">
-      <i class="fa fa-upload"></i> CSV导入
+      <i class="fa fa-upload"></i> <span data-i18n="mitsubishi-write.button.import"></span>
     </button>
     <button class="red-ui-button" onclick="writeTagEditor.exportCSV()" style="font-size:11px;padding:2px 8px;background:#888">
-      <i class="fa fa-download"></i> 导出CSV
+      <i class="fa fa-download"></i> <span data-i18n="mitsubishi-write.button.export"></span>
     </button>
   </div>
 
   <!-- CSV 导入区 -->
   <div id="w-csv-import-area" style="display:none;margin-bottom:6px">
-    <textarea id="w-csv-import-text" style="width:100%;height:60px;font-size:11px;box-sizing:border-box" placeholder="regType,addr,dataType,byteOrder,wordOrder,bitOffset,name,id,value
-D,100,INT16,,,src,温度设定点,temp_set,25.0
-M,0,BOOL,,,,,启动信号,m_start,"></textarea>
+    <textarea id="w-csv-import-text" style="width:100%;height:60px;font-size:11px;box-sizing:border-box" placeholder="" data-i18n="[placeholder]mitsubishi-write.placeholder.csvExample"></textarea>
     <button class="red-ui-button" onclick="writeTagEditor.doImportCSV()" style="font-size:11px;padding:2px 8px;margin-top:2px">
-      <i class="fa fa-check"></i> 确认导入
+      <i class="fa fa-check"></i> <span data-i18n="mitsubishi-write.button.confirmImport"></span>
     </button>
-    <span style="font-size:10px;color:#888;margin-left:4px">首行为列名，从第二行起每行一个点位。写入值：msg.payload.tags[].value 优先，缺省回落默认值列</span>
+    <span style="font-size:10px;color:#888;margin-left:4px"><span data-i18n="mitsubishi-write.hint.csv"></span></span>
   </div>
 
   <!-- 分页 + 批量删除 -->
   <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px" id="w-tag-pager">
-    <span style="font-size:11px;color:#888">每页</span>
+    <span style="font-size:11px;color:#888"><span data-i18n="mitsubishi-write.label.pageSize"></span></span>
     <select id="w-pager-size" onchange="writeTagEditor.setPageSize(this.value)" style="width:55px;font-size:11px">
       <option value="50">50</option><option value="100" selected>100</option><option value="200">200</option><option value="500">500</option>
     </select>
@@ -68,45 +66,45 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
     <button class="red-ui-button" onclick="writeTagEditor.goPage(-1)" style="font-size:10px;padding:1px 5px">»</button>
     <span style="flex:1"></span>
     <button class="red-ui-button" onclick="writeTagEditor.deleteSelected()" style="font-size:10px;padding:1px 6px;background:#c44">
-      <i class="fa fa-trash"></i> 删除选中
+      <i class="fa fa-trash"></i> <span data-i18n="mitsubishi-write.button.deleteSelected"></span>
     </button>
   </div>
 
   <!-- 点位编辑表格 -->
   <div class="form-row" style="margin-top:0">
-    <label><i class="fa fa-list"></i> 点位表格 (msg.payload.tags 传入时按 id/地址合并；value 缺省回落默认值)</label>
+    <label><i class="fa fa-list"></i> <span data-i18n="mitsubishi-write.label.table"></span></label>
   </div>
   <div style="margin-bottom:4px;max-height:420px;overflow-y:auto">
     <table style="width:100%;font-size:11px;border-collapse:collapse">
       <thead>
         <tr style="color:#888;position:sticky;top:0;background:#333">
-          <th style="width:3%"><input type="checkbox" id="w-tag-select-all" onchange="writeTagEditor.toggleAll(this.checked)" title="全选"></th>
-          <th style="width:8%;text-align:left">寄存器</th>
-          <th style="width:8%;text-align:left">地址</th>
-          <th style="width:10%;text-align:left">数据类型</th>
-          <th style="width:9%;text-align:left" title="字节序：16 位字内高低字节是否交换">字节序</th>
-          <th style="width:8%;text-align:left" title="字序：32/64 位类型高低字先后">字序</th>
-          <th style="width:6%;text-align:left" title="位偏移：BOOL 取字内第几位(0-15)">位</th>
-          <th style="width:12%;text-align:left">名称</th>
+          <th style="width:3%"><input type="checkbox" id="w-tag-select-all" onchange="writeTagEditor.toggleAll(this.checked)" title="" data-i18n="[title]mitsubishi-write.table.selectAll"></th>
+          <th style="width:8%;text-align:left"><span data-i18n="mitsubishi-write.table.register"></span></th>
+          <th style="width:8%;text-align:left"><span data-i18n="mitsubishi-write.table.address"></span></th>
+          <th style="width:10%;text-align:left"><span data-i18n="mitsubishi-write.table.dataType"></span></th>
+          <th style="width:9%;text-align:left" title="" data-i18n="[title]mitsubishi-write.table.byteOrderTitle"><span data-i18n="mitsubishi-write.table.byteOrder"></span></th>
+          <th style="width:8%;text-align:left" title="" data-i18n="[title]mitsubishi-write.table.wordOrderTitle"><span data-i18n="mitsubishi-write.table.wordOrder"></span></th>
+          <th style="width:6%;text-align:left" title="" data-i18n="[title]mitsubishi-write.table.bitTitle"><span data-i18n="mitsubishi-write.table.bit"></span></th>
+          <th style="width:12%;text-align:left"><span data-i18n="mitsubishi-write.label.name"></span></th>
           <th style="width:5%"></th>
           <th style="width:10%;text-align:left">ID</th>
-          <th style="width:9%;text-align:left" title="静态默认值：msg 未提供 value 时使用；留空则必须由 msg 提供">默认值</th>
+          <th style="width:9%;text-align:left" title="" data-i18n="[title]mitsubishi-write.table.defaultValueTitle"><span data-i18n="mitsubishi-write.table.defaultValue"></span></th>
         </tr>
       </thead>
       <tbody id="w-tags-tbody"></tbody>
     </table>
   </div>
   <button class="red-ui-button" onclick="writeTagEditor.add(); writeTagEditor.goToLast();" style="margin-top:2px;font-size:11px">
-    <i class="fa fa-plus"></i> 添加点位
+    <i class="fa fa-plus"></i> <span data-i18n="mitsubishi-write.button.addTag"></span>
   </button>
   <input type="hidden" id="node-input-tags">
 
   <hr>
   <div style="color:#888;font-size:11px;margin-bottom:4px">
-    <i class="fa fa-info-circle"></i> 静态: 表格配置点位定义+默认值，任意消息触发即写入 | 动态: msg.payload.tags 按 id/地址合并覆盖<br>
-    写入值：msg.payload.tags[].value 优先，缺省回落表格默认值列；两者都无则跳过该点位<br>
-    输出: msg.payload.data[点位ID] = {value, quality, ts, regType}<br>
-    BOOL / 位设备地址自动走 RMW（读-改-写），非 BOOL 字元件直接批量写
+    <i class="fa fa-info-circle"></i> <span data-i18n="mitsubishi-write.hint.static"></span><br>
+    <span data-i18n="mitsubishi-write.hint.writeValue"></span><br>
+    <span data-i18n="mitsubishi-write.hint.output"></span><br>
+    <span data-i18n="mitsubishi-write.hint.bool"></span>
   </div>
 </script>
 
@@ -116,6 +114,10 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
     page: 0,
     pageSize: 100,
     _selected: {},
+    _translate: null,
+    t: function (key, options) {
+      return this._translate ? this._translate('mitsubishi-write.' + key, options) : key;
+    },
 
     init: function () {
       try { this.rows = JSON.parse($('#node-input-tags').val() || '[]'); } catch (e) { this.rows = []; }
@@ -140,7 +142,7 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
 
     deleteSelected: function () {
       var toRemove = Object.keys(this._selected).filter(function (k) { return this._selected[k]; }.bind(this)).map(Number).sort(function (a, b) { return b - a; });
-      if (toRemove.length === 0) { RED.notify('未选中任何点位', 'warning'); return; }
+      if (toRemove.length === 0) { RED.notify(writeTagEditor.t('notify.noneSelected'), 'warning'); return; }
       for (var i = 0; i < toRemove.length; i++) { this.rows.splice(toRemove[i], 1); }
       this._selected = {};
       this.render();
@@ -177,9 +179,9 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
 
     doImportCSV: function () {
       var text = $('#w-csv-import-text').val().trim();
-      if (!text) { RED.notify('请粘贴CSV数据', 'warning'); return; }
+      if (!text) { RED.notify(writeTagEditor.t('notify.noCsv'), 'warning'); return; }
       var lines = text.split('\n');
-      if (lines.length < 2) { RED.notify('CSV至少需要表头+1行数据', 'warning'); return; }
+      if (lines.length < 2) { RED.notify(writeTagEditor.t('notify.invalidCsv'), 'warning'); return; }
       var headers = lines[0].split(',');
       var added = 0;
       for (var i = 1; i < lines.length; i++) {
@@ -203,7 +205,7 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
       this.goToLast();
       $('#w-csv-import-area').hide();
       $('#w-csv-import-text').val('');
-      RED.notify('导入 ' + added + ' 个点位');
+      RED.notify(writeTagEditor.t('notify.imported', {count: added}));
     },
 
     exportCSV: function () {
@@ -212,7 +214,7 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
         var r = this.rows[i];
         csv += [r.regType||'', r.addr||'', r.dataType||'', r.byteOrder||'', r.wordOrder||'', r.bitOffset||'', r.name||'', r.id||'', r.value||''].join(',') + '\n';
       }
-      var blob = new Blob(['﻿' + csv], {type: 'text/csv;charset=utf-8'});
+      var blob = new Blob(['' + csv], {type: 'text/csv;charset=utf-8'});
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a'); a.href = url; a.download = 'mc-write-tags.csv';
       a.click(); URL.revokeObjectURL(url);
@@ -269,7 +271,7 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
         bit.on('change', function () { self.update(idx, 'bitOffset', $(this).val()); });
         tr.append($('<td>').append(bit));
 
-        var nm = mkInp(row.name, '温度设定点', 'text', '90%');
+        var nm = mkInp(row.name, writeTagEditor.t('placeholder.tagName'), 'text', '90%');
         nm.on('change', function () { self.update(idx, 'name', $(this).val()); });
         tr.append($('<td>').append(nm));
 
@@ -281,8 +283,8 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
         id.on('change', function () { self.update(idx, 'id', $(this).val()); });
         tr.append($('<td>').append(id));
 
-        var val = mkInp(row.value, '静态值', 'text', '85%');
-        val.title = '静态默认值：msg 未提供 value 时使用';
+        var val = mkInp(row.value, writeTagEditor.t('placeholder.staticValue'), 'text', '85%');
+        val.attr('title', writeTagEditor.t('table.defaultValueTitle'));
         val.on('change', function () { self.update(idx, 'value', $(this).val()); });
         tr.append($('<td>').append(val));
 
@@ -295,7 +297,7 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
     category: 'edgelink',
     color: '#FDD0A2',
     defaults: {
-      name: { value: '三菱MC写入' },
+      name: { value: '' },
       plc: { type: 'mitsubishi-config', required: true },
       deviceId: { value: '' },
       serialNo: { value: 0 },
@@ -303,9 +305,10 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
     },
     inputs: 1,
     outputs: 1,
-    paletteLabel: 'MC 写入',
-    label: function () { return this.name || '三菱MC写入'; },
+    paletteLabel: function () { return this._('mitsubishi-write.palette.label'); },
+    label: function () { return this.name || this._('mitsubishi-write.placeholder.nodeName'); },
     oneditprepare: function () {
+      writeTagEditor._translate = this._.bind(this);
       writeTagEditor.init();
       window.addWriteTagBatch = function () {
         var start = parseInt($('#w-batch-start').val(), 10) || 0;
@@ -325,6 +328,7 @@ M,0,BOOL,,,,,启动信号,m_start,"></textarea>
       };
     },
     oneditsave: function () {
+      writeTagEditor._translate = null;
       delete window.addWriteTagBatch;
     }
   });

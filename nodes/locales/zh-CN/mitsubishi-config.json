@@ -1,0 +1,32 @@
+{
+  "mitsubishi-config": {
+    "label": {
+      "name": "名称",
+      "host": "IP 地址",
+      "port": "端口",
+      "frame": "帧格式",
+      "series": "PLC 系列",
+      "protocol": "传输协议",
+      "commCode": "数据代码",
+      "networkNo": "网络号",
+      "stationNo": "站号",
+      "timeout": "超时 (ms)",
+      "maxRetries": "重试次数",
+      "retryInterval": "重试间隔 (ms)"
+    },
+    "option": {
+      "qSeries": "Q 系列",
+      "lSeries": "L 系列",
+      "iqrSeries": "iQ-R 系列",
+      "fxSeries": "FX 系列（X/Y 为 8 进制地址）",
+      "tcp": "TCP（长连接，默认）",
+      "udp": "UDP（无连接，QJ71E71/内置以太网常用）",
+      "binary": "Binary（默认，绝大多数设备）",
+      "asciiQ": "ASCII-Q（Q/L/E71 老式 MC 协议，软元件名式）",
+      "asciiSlmp": "ASCII-SLMP（FX5/iQ-R，hex 直译式）"
+    },
+    "palette": {
+      "label": "PLC 连接配置"
+    }
+  }
+}

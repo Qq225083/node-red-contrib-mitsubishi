@@ -1,0 +1,63 @@
+{
+  "mitsubishi-write": {
+    "label": {
+      "name": "Name",
+      "plc": "PLC Configuration",
+      "deviceId": "Device ID",
+      "serialNo": "Serial Number (4E frame, 0 = disabled)",
+      "batch": "Batch Add",
+      "start": "Start",
+      "count": "Count",
+      "pageSize": "Per page",
+      "table": "Tag Table (msg.payload.tags merges by ID/address; missing values use defaults)"
+    },
+    "hint": {
+      "deviceId": "Enter when used independently; the output deviceId will use this value",
+      "csv": "First row contains column names; one tag per following row. Write values use msg.payload.tags[].value first, then the default-value column.",
+      "static": "Static: configured tags and defaults; any message triggers a write | Dynamic: msg.payload.tags merges by ID/address",
+      "writeValue": "Write value: msg.payload.tags[].value takes priority, otherwise use table default; skip if neither exists",
+      "output": "Output: msg.payload.data[tagId] = {value, quality, ts, regType}",
+      "bool": "BOOL / bit-device addresses use RMW (read-modify-write); non-BOOL word devices use direct batch writes"
+    },
+    "button": {
+      "generate": "Generate",
+      "import": "Import CSV",
+      "export": "Export CSV",
+      "confirmImport": "Confirm Import",
+      "deleteSelected": "Delete Selected",
+      "addTag": "Add Tag"
+    },
+    "table": {
+      "register": "Register",
+      "address": "Address",
+      "dataType": "Data Type",
+      "byteOrder": "Byte Order",
+      "wordOrder": "Word Order",
+      "bit": "Bit",
+      "name": "Name",
+      "selectAll": "Select All",
+      "byteOrderTitle": "Byte order: swap high/low bytes within a 16-bit word",
+      "wordOrderTitle": "Word order: high/low word order for 32/64-bit values",
+      "bitTitle": "Bit offset: bit position within a word for BOOL (0–15)",
+      "defaultValue": "Default Value",
+      "defaultValueTitle": "Static default: used when msg does not provide value; leave blank to require msg.value"
+    },
+    "notify": {
+      "noneSelected": "No tags selected",
+      "noCsv": "Please paste CSV data",
+      "invalidCsv": "CSV requires a header and at least one data row",
+      "imported": "Imported __count__ tags"
+    },
+    "placeholder": {
+      "plc": "Select a mitsubishi-config node",
+      "reference": "Target tag ID",
+      "nodeName": "Mitsubishi MC Write",
+      "tagName": "Temperature Setpoint",
+      "staticValue": "Static Value",
+      "csvExample": "regType,addr,dataType,byteOrder,wordOrder,bitOffset,name,id,value\nD,100,INT16,,,src,Temperature Setpoint,temp_set,25.0\nM,0,BOOL,,,,,Start Signal,m_start,"
+    },
+    "palette": {
+      "label": "MC Write"
+    }
+  }
+}
